@@ -26,25 +26,24 @@
 做法上以**拦出口**为主：被拦的广告接口返回「该广告位已关闭」这类成功空响应，让 App 走它自己既有的正常分支，
 而不是把请求打断、把状态机掐死。
 
-**安装**：[下载 APK](https://github.com/Xposed-Modules-Repo/io.github.shitianyaa.friendlyschool/releases/latest) → 装好 APK → 在 LSPosed 里启用本模块 → 重启目标 App（三个目标已在模块里声明，通常无需手动挑选）。
+**安装**：[下载 APK](https://github.com/Xposed-Modules-Repo/io.github.shitianyaa.friendlyschool/releases/latest) → 装好 APK → 在 LSPosed 里启用本模块 → 重启目标 App（四个目标已在模块里声明，通常无需手动挑选）。
 
 ## 兼容与版本
 
 - Android 8.0（API 26）及以上；使用支持 **libxposed API 102** 的 LSPosed 框架。
-- 模块包名：`io.github.shitianyaa.friendlyschool`；当前版本：`2.1.1`（versionCode `4`）。
+- 模块包名：`io.github.shitianyaa.friendlyschool`；当前版本：`2.2`（versionCode `5`）。
 - 版本变更见 [更新日志](https://github.com/shitianyaa/FriendlySchool/blob/main/CHANGELOG.md)。
 - **仅 LSPosed 入口**：不提供桌面入口，请在 LSPosed 管理器中启用并管理模块。
 - 旧包名 `com.yiran.friendlyschool` 与本包可并存。迁移时先停用旧模块，再启用本模块并重启目标 App，避免重复 Hook。
 
-此前研究与真机验证记录覆盖以下目标版本；其他版本尚未确认兼容：
+兼容范围覆盖以下目标版本；其他版本尚未确认：
 
 | 应用 | 已分析 / 验证的版本 |
 |---|---|
 | 易校园 | 7.7.8 |
 | WakeUp 课程表 | 6.5.0（versionCode 540） |
 | JMComic3 | 2.1.9 |
-
-2026-10-01 在 Android 17 / LSPosed 2.2.0-it（7901，API 102）上完成新包名 APK 的回归：三个 App 各 3 次飞行模式冷启动，再恢复联网检查；关键 Hook 无丢失、入口点失效数为 0，设备包与构建 / 交付副本哈希一致。用户在手机端确认余额刷新、付款码、课表、去广告 / 签到及排版正常；未清除用户数据。
+| 光影边框 | 3.4.5（versionCode 34500） |
 
 本次修复了易校园资源读取与命令执行拦截中的异常传递，避免框架保护模式将主动拒绝吞掉。
 
@@ -83,6 +82,15 @@
 - **WebView 层去广告**：清空广告缓存的读写两侧并拦掉广告接口，所有广告位无事可做；
 - **开屏**：仅在封面未走完的窗口内，让 App 走它自己的「免广告会员」分支跳过纯广告封面（只改这一个显示标志，余额/到期/等级等其它字段保持服务端原值）；
 - **自动每日签到**：用你自己的账号调官方接口签到，结果会在 App 内弹一条提示（`AUTO_CHECK_IN` 可关）。
+
+### 光影边框 · `com.dengziwl.bk`
+
+（Flutter 应用，图片边框 / 水印编辑）
+
+- **去广告**：会员 / 广告开关全部收敛在一个本地设置键上，模块把它固定为「已开通」——开屏广告、导出页原生广告等 29+ 处广告位一处断开；
+- **拔掉一条远程代码下发通道**：该应用集成的某个广告 SDK 会用明文 HTTP 从裸 IP 拉配置与 AES 加密的 dex 并反射加载，且无任何完整性校验；模块直接拦断该配置请求（异步上报，不阻塞主流程）；
+
+**边界**：应用内「开通会员」入口的文案读的是服务端返回的会员对象（经 Dart 原生网络层），模块只能改本地设置、改不了这处显示，所以该入口仍会显示原样（不影响去广告效果）。
 
 ## ⚠️ 已知边界
 
