@@ -31,7 +31,7 @@
 ## 兼容与版本
 
 - Android 8.0（API 26）及以上；使用支持 **libxposed API 102** 的 LSPosed 框架。
-- 模块包名：`io.github.shitianyaa.friendlyschool`；当前版本：`2.3`（versionCode `6`）。
+- 模块包名：`io.github.shitianyaa.friendlyschool`；当前版本：`2.3.1`（versionCode `7`）。
 - 版本变更见 [更新日志](https://github.com/shitianyaa/FriendlySchool/blob/main/CHANGELOG.md)。
 - **仅 LSPosed 入口**：不提供桌面入口，请在 LSPosed 管理器中启用并管理模块。
 - 旧包名 `com.yiran.friendlyschool` 与本包可并存。迁移时先停用旧模块，再启用本模块并重启目标 App，避免重复 Hook。
@@ -122,6 +122,10 @@ FriendlySchool 仅供 Android、LSPosed 相关技术研究、学习交流及个�
 - **Telegram 频道**：欢迎加入 [FriendlySchool Release 频道](https://t.me/FriendlySchoolRelease) 交流玩耍，获取第一手更新与发布资讯！
 - **问题反馈**：如果在日常使用中遇到 Bug 或异常，欢迎提交 [Issue](https://github.com/shitianyaa/FriendlySchool/issues)；
 - **新应用适配**：如果有想要支持或净化的校园 / 常用 App，非常欢迎提交 [Issue](https://github.com/shitianyaa/FriendlySchool/issues) 并附上应用名称、版本及相关功能诉求！
+
+## 🙏 致谢
+
+感谢 [yylsping/coolapk-purifier](https://github.com/yylsping/coolapk-purifier)。FriendlySchool 的酷安内嵌开屏广告处理参考了该项目 `SplashEmbeddedHooks` / `SplashEmbeddedDispatch` 的设计思路，包括在 Fragment 生命周期完成后复用宿主原生结束通道，以及按 Fragment 实例避免重复投递结束信号。
 
 ## 源码与构建
 
