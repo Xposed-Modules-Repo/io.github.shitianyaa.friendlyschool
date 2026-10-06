@@ -26,12 +26,12 @@
 做法上以**拦出口**为主：被拦的广告接口返回「该广告位已关闭」这类成功空响应，让 App 走它自己既有的正常分支，
 而不是把请求打断、把状态机掐死。
 
-**安装**：[下载 APK](https://github.com/Xposed-Modules-Repo/io.github.shitianyaa.friendlyschool/releases/latest) → 装好 APK → 在 LSPosed 里启用本模块 → 重启目标 App（四个目标已在模块里声明，通常无需手动挑选）。
+**安装**：[下载 APK](https://github.com/Xposed-Modules-Repo/io.github.shitianyaa.friendlyschool/releases/latest) → 装好 APK → 在 LSPosed 里启用本模块 → 重启目标 App（目标已在模块里声明，通常无需手动挑选）。
 
 ## 兼容与版本
 
 - Android 8.0（API 26）及以上；使用支持 **libxposed API 102** 的 LSPosed 框架。
-- 模块包名：`io.github.shitianyaa.friendlyschool`；当前版本：`2.2`（versionCode `5`）。
+- 模块包名：`io.github.shitianyaa.friendlyschool`；当前版本：`2.3`（versionCode `6`）。
 - 版本变更见 [更新日志](https://github.com/shitianyaa/FriendlySchool/blob/main/CHANGELOG.md)。
 - **仅 LSPosed 入口**：不提供桌面入口，请在 LSPosed 管理器中启用并管理模块。
 - 旧包名 `com.yiran.friendlyschool` 与本包可并存。迁移时先停用旧模块，再启用本模块并重启目标 App，避免重复 Hook。
@@ -44,8 +44,7 @@
 | WakeUp 课程表 | 6.5.0（versionCode 540） |
 | JMComic3 | 2.1.9 |
 | 光影边框 | 3.4.5（versionCode 34500） |
-
-本次修复了易校园资源读取与命令执行拦截中的异常传递，避免框架保护模式将主动拒绝吞掉。
+| 酷安 | 16.6.4（versionCode 2609291） |
 
 作者已在以下设备自测正常：
 
@@ -91,6 +90,11 @@
 - **拔掉一条远程代码下发通道**：该应用集成的某个广告 SDK 会用明文 HTTP 从裸 IP 拉配置与 AES 加密的 dex 并反射加载，且无任何完整性校验；模块直接拦断该配置请求（异步上报，不阻塞主流程）；
 
 **边界**：应用内「开通会员」入口的文案读的是服务端返回的会员对象（经 Dart 原生网络层），模块只能改本地设置、改不了这处显示，所以该入口仍会显示原样（不影响去广告效果）。
+
+### 酷安 · `com.coolapk.market`
+
+- **信息流与回复列表去广告**：在列表处理前后过滤 `sponsor` 广告卡片，保留普通帖子与回复；
+- **开屏直达**：开屏广告页（含第三方 SDK 的开屏页）起后立即结束，直接进入主界面，不再停留等广告回调。
 
 ## ⚠️ 已知边界
 
